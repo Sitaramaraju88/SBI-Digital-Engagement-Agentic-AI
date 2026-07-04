@@ -21,7 +21,7 @@
       "loan_count": 0
     },
     "risk_appetite": "moderate",
-    "analysis": "**Financial Health Summary:** Bhargavi Mehta has a stable financial position with a moderate account balance and no outstanding loans. Her investable surplus is \u20b977,600, indicating potential for growth. However, a significant portion of her account balance has been idle for 11 days.\n\n**Disengagement Risk Factors:** The top two disengagement risk factors are (1) no login for 70 days, indicating a lack of engagement with her account, and (2) a relatively low notification response rate of 0.59, suggesting she may not be actively monitoring her financial communications.\n\n**Loan Burden:** Fortunately, Bhargavi has no active loans, which means she does not have any EMI burdens and can allocate her income towards savings, investments, or other financial goals.\n\n**Risk Appetite Confirmation:** The AI-calculated risk appetite of \"moderate\" seems appropriate, given her stable income, lack of loans, and significant investable surplus, which suggests she can tolerate some level of risk while still being cautious with her finances.\n\n**Guidance for Advisor Agent:** Focus on re-engaging Bhargavi with her account and exploring ways to utilize her idle balance and investable surplus effectively. It's essential to understand her current financial goals and concerns to provide personalized guidance and support."
+    "analysis": "**Financial Health Summary:** Bhargavi Mehta has a stable financial position with a sizable account balance and no active loans, indicating a comfortable financial situation. Her investable surplus is \u20b977,600, suggesting potential for further financial growth. However, an idle balance of \u20b998,000 for 11 days may indicate underutilization of funds.\n\n**Disengagement Risk Factors:** The top two disengagement risk factors are (1) no login for 70 days, indicating a lack of engagement with her accounts, and (2) a relatively low notification response rate of 0.59, suggesting she may not be actively monitoring her financial communications.\n\n**Loan Burden:** There is no loan burden as Bhargavi has no active loans, with a total monthly EMI of \u20b90 and an EMI to Salary Ratio of 0.0.\n\n**Risk Appetite Confirmation:** The AI-calculated risk appetite of moderate seems appropriate, given her stable financial position, lack of loans, and significant idle balance, which may indicate a cautious approach to financial decisions.\n\n**Guidance for Advisor Agent:** The Advisor Agent should focus on re-engaging Bhargavi, possibly through a personalized communication to understand her current financial goals and concerns, and explore ways to optimize her idle funds to align with her moderate risk appetite, ultimately aiming to increase her engagement and potentially unlock further financial growth opportunities."
   },
   "loan": {
     "agent": "Loan Optimizer Agent",
@@ -57,7 +57,7 @@
     "best_recommendation": "SBI Amrit Vrishti Scheme",
     "risk_appetite": "moderate",
     "target_language": "English",
-    "personalized_message": "Hi Bhargavi, consider the SBI Amrit Vrishti Scheme with a 7.25% interest rate for 444 days to grow your idle balance of \u20b998,000."
+    "personalized_message": "Hi Bhargavi, consider SBI Amrit Vrishti Scheme with 7.25% interest for 444 days to optimize your idle \u20b998,000, boosting your financial growth."
   },
   "action": {
     "agent": "Autonomous Action Agent",
@@ -81,7 +81,7 @@
         "audit_logged": true,
         "emi_to_salary_ratio": 0.0,
         "investable_surplus": 77600,
-        "timestamp": "2026-07-02 10:17:32"
+        "timestamp": "2026-07-04 03:16:30"
       }
     ],
     "status_update": "Action pending: SBI Amrit Vrishti Scheme. Compliance check passed. Status: PENDING_APPROVAL. Please approve to proceed. Your \u20b920,400 safety buffer is protected. Audit trail maintained."
