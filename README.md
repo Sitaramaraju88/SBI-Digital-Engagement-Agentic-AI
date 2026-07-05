@@ -354,10 +354,7 @@ Event-driven architecture — agents only activate on financial triggers. A ligh
 
 ## 👨‍💻 Built By
 
-**M V Sita Rama Raju**
-B.Tech Computer Science · KL University, Hyderabad (2023–2027)
-DSA Mentor & Technical Team Member, Avinya Club
-🏆 First Place — OpenSourceX Hackathon 2025
+**M V Sita Rama Raju && M Anas faaiz**
 
 ---
 
