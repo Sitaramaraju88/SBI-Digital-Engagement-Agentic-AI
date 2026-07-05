@@ -24,6 +24,7 @@
 - [Project Structure](#️-project-structure)
 - [How Each Agent Works](#️-how-each-agent-works)
 - [Customer Dataset & Relational Database](#-customer-dataset--relational-database)
+- [Web UI Features](#-web-ui-features)
 - [Safety & Compliance](#️-safety--compliance)
 - [Tech Stack](#-tech-stack)
 - [How to Run This Project](#-how-to-run-this-project)
@@ -47,7 +48,7 @@ This project builds an **Agentic AI system** that:
 | 🧠 | Uses an LLM to intelligently calculate each customer's risk appetite |
 | 💳 | Plans optimal loan repayment strategies based on salary and debt burden |
 | 💡 | Recommends the right financial action at the right time |
-| 🌐 | Communicates insights via a **multi-language notification engine** (English, Hindi, Telugu, etc.) |
+| 🌐 | Communicates insights via a **multi-language notification engine** (English, Hindi, Telugu, Marathi, Tamil, Bengali) |
 | ✅ | Takes action automatically — with the customer's approval |
 
 > Think of it as a personal finance assistant that works quietly in the background and only speaks up when it has something genuinely useful to say.
@@ -98,11 +99,15 @@ sbi-engagement-agent/
 │                                 # compliance check
 │
 ├── ui/
-│   └── app.py                   # Streamlit web interface with customer selector + filters
+│   └── app.py                   # Streamlit web interface — theme-aware UI, customer selector,
+│                                 # engagement filter, language picker, cached pipeline runs
 │
-├── sbi_bank.db                  # SQLite3 database — relational customer & loan schemas
-├── migrate.py                   # One-click data migration utility (JSON → SQLite3)
+├── data/
+│   └── sbi_products.json        # Approved product whitelist used by the compliance checks
+│
+├── sbi_bank.db                  # SQLite3 database — relational customer & loan schemas, pre-seeded
 ├── main.py                      # Orchestrator — connects all 4 agents, supports caching
+├── output.json                  # Last pipeline run output (sample/reference)
 ├── .env                         # API keys (never commit this!)
 ├── .gitignore                   # Ignores sensitive files
 └── requirements.txt             # Python dependencies
@@ -155,7 +160,7 @@ Reads Agent 1 and Agent 2's reports and constructs hyper-personalized strategies
 - Calculates **investable surplus** = idle balance − (EMIs + 20% salary safety buffer)
 - If EMI ratio >50% → recommends debt consolidation only, no investments
 - Matches financial recommendations directly to the customer's AI-calculated risk appetite
-- **Multi-language Notification Engine** — the LLM localizes and drafts a friendly, human-sounding nudge under 100 words in the customer's native language based on their demographic/regional profile
+- **Multi-language Notification Engine** — the LLM localizes and drafts a friendly, human-sounding nudge under 100 words in the customer's chosen language, selectable directly from the UI (English, Hindi, Telugu, Marathi, Tamil, Bengali)
 
 ### ⚡ Agent 4 — Autonomous Action Agent
 
@@ -173,7 +178,7 @@ Every action generates an **immutable audit log** with customer ID, timestamp, a
 
 ## 👥 Customer Dataset & Relational Database
 
-The architecture is built on a relational **SQLite3** engine that maps personal data tables to specialized loan tables via foreign keys. It handles **100 real-world customer profiles** across diverse Indian cities, occupations, and financial situations — with no pre-labels anywhere.
+The architecture is built on a relational **SQLite3** engine that maps personal data tables to specialized loan tables via foreign keys. It handles **100 real-world customer profiles** across diverse Indian cities, occupations, and financial situations — with no pre-labels anywhere. The database ships pre-seeded in `sbi_bank.db`, so there's no separate setup step to populate it.
 
 **Database Schema Map**
 
@@ -189,6 +194,19 @@ The architecture is built on a relational **SQLite3** engine that maps personal 
 | SBI-HYD-2024-012 | Ananya Chauhan, Business Owner, 28 | No | 🟡 Medium |
 | SBI-HYD-2024-051 | Zara Jain, Sales Manager, 59 | Yes — 3 loans | 🔴 High |
 | SBI-HYD-2024-081 | Priya Pandey, Business Owner, 33 | Yes — 2 loans | 🔴 High |
+
+---
+
+## 🖥️ Web UI Features
+
+The Streamlit app (`ui/app.py`) is built as a judge/demo-friendly control panel, not just a pipeline runner:
+
+- **Automatic dark/light theme support** — every custom UI element follows Streamlit's active theme, no jarring hardcoded colors
+- **Multi-customer selector** — pick any of the 100 seeded customers by name and ID
+- **Engagement filter** — narrow the customer list by disengagement level (High / Medium / Low) before selecting one
+- **Notification language picker** — choose the output language for the personalized nudge on the fly
+- **Cached pipeline runs** — repeated runs for the same customer/language pair reuse cached results instead of re-calling the LLM every time
+- **Live customer preview** — see key profile stats before running the full 4-agent pipeline
 
 ---
 
@@ -238,14 +256,7 @@ cd sbi-engagement-agent
 pip install -r requirements.txt
 ```
 
-**Step 3 — Seed/populate your SQLite3 database**
-
-Run the migration script to extract the original customer profiles and build the relational database layout:
-```bash
-python migrate.py
-```
-
-**Step 4 — Add your Groq API key**
+**Step 3 — Add your Groq API key**
 
 Create a `.env` file in the root folder:
 ```
@@ -257,17 +268,19 @@ GROQ_API_KEY=gsk_your_key_here
 > $env:GROQ_API_KEY = "gsk_your_key_here"
 > ```
 
-**Step 5 — Run the pipeline (terminal)**
+**Step 4 — Run the pipeline (terminal)**
 ```bash
 python main.py
 ```
 
-**Step 6 — Run the web UI**
+**Step 5 — Run the web UI**
 ```bash
 streamlit run ui/app.py
 ```
 
 Then open **http://localhost:8501** in your browser.
+
+> The database (`sbi_bank.db`) ships pre-populated with all 100 customer and loan records — no migration or seeding step required.
 
 ---
 
@@ -278,26 +291,23 @@ Then open **http://localhost:8501** in your browser.
    SBI AGENTIC AI - DIGITAL ENGAGEMENT SYSTEM
 ============================================================
 
-[1/5] Connecting to SQLite3 Database Schema...
-      ✅ Connected.
-
-[2/5] Running Behavioral Intelligence Agent...
+[1/4] Running Behavioral Intelligence Agent...
       ✅ Disengagement Level  : High
       ✅ Disengagement Score  : 80/100
       ✅ Investable Surplus   : ₹0
       ✅ AI Risk Appetite     : Low
 
-[3/5] Running Loan Optimizer Agent...
+[2/4] Running Loan Optimizer Agent...
       ✅ Loans Found from DB  : 3
       ✅ Total EMI            : ₹97,000
       ✅ Burden Level         : 🔴 Severe
 
-[4/5] Running Proactive Advisor Agent...
+[3/4] Running Proactive Advisor Agent...
       ✅ Recommendations Found : 1
       ✅ Best Action           : Debt Consolidation Advisory
       ✅ Multi-language Nudge  : Generated successfully (Hindi/Telugu localized)
 
-[5/5] Running Autonomous Action Agent...
+[4/4] Running Autonomous Action Agent...
       ✅ Action Status  : EXECUTED
       ✅ Compliant      : True
       ✅ Audit Logged   : True
@@ -311,11 +321,11 @@ Then open **http://localhost:8501** in your browser.
 
 ## 🙋 Frequently Asked Questions
 
-**Q: Why migrate from JSON files to SQLite3?**
+**Q: Why SQLite3 instead of JSON files?**
 JSON scales terribly for 500M customers. SQLite3 gives relational stability, unlocks real SQL filtering (`WHERE customer_id = ?`), enforces loan-to-customer constraints securely via foreign keys, and demonstrates production intent to the judges.
 
 **Q: How does the Multi-language Notification Engine work?**
-The Proactive Advisor Agent reads the customer's geographic and cultural profile from the database (city, occupation). The LLM uses its natural multilingual ability to translate financial advice directly into regional languages, bypassing robotic translation software for a more personal connection.
+The Proactive Advisor Agent reads the customer's geographic and cultural profile from the database (city, occupation), combined with a language chosen directly in the UI. The LLM uses its natural multilingual ability to translate financial advice into that regional language, bypassing robotic translation software for a more personal connection.
 
 **Q: What if a customer has too many loans?**
 If the EMI burden exceeds 50% of salary, the system immediately flags a financial emergency, blocks any investment recommendations, and instead suggests debt consolidation. The Loan Optimizer Agent takes priority over the Advisor Agent in this case.
