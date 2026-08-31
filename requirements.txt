@@ -1,6 +1,4 @@
-crewai
 langchain
 langchain-groq
 streamlit
-faiss-cpu
 python-dotenv
