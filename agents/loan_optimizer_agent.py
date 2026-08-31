@@ -10,7 +10,7 @@ load_dotenv(override=True)
 
 llm = ChatGroq(
     api_key=os.getenv("GROQ_API_KEY"),
-    model_name="llama-3.3-70b-versatile"
+    model_name="openai/gpt-oss-120b"
 )
 
 def run_loan_optimizer_agent(behavioral_output: dict, customer_id: str = None):

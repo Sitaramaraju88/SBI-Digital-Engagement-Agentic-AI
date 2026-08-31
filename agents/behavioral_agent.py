@@ -10,7 +10,7 @@ load_dotenv(override=True)
 
 llm = ChatGroq(
     api_key=os.getenv("GROQ_API_KEY"),
-    model_name="llama-3.3-70b-versatile"
+    model_name="openai/gpt-oss-120b"
 )
 
 def calculate_risk_appetite(customer: dict, balance_info: dict) -> str:
